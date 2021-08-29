@@ -1,6 +1,7 @@
 const express = require("express");
 const { randomBytes } = require("crypto");
 const bodyParser = require("body-parser");
+const axios = require("axios");
 const cors = require("cors");
 require('colors');
 
@@ -14,7 +15,7 @@ app.get('/posts', (req, res) => {
     res.send(posts);
 })
 
-app.post('/posts', (req, res) => {
+app.post('/posts', async (req, res) => {
     console.log("\nCreating new post".bgYellow.black);
     const id = randomBytes(4).toString('hex');
     console.log(`Id: ${id}`.bgYellow.black);
@@ -23,6 +24,17 @@ app.post('/posts', (req, res) => {
         id, title
     }
     console.log(`Created: ${JSON.stringify(posts)}`.bgYellow.black);
+    try {
+        await axios.post("http://localhost:4005/events", {
+            type: "PostCreated",
+            data: {
+                id, title
+            }
+        })
+    }catch (e) {
+        console.error(`${e.message}`.bgRed.black);
+    }
+    console.log(`Echo event: type: "PostCreated" data: ${JSON.stringify(posts)}`.bgYellow.black);
     res.status(201).send(posts[id]);
 })
 
