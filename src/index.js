@@ -25,6 +25,7 @@ app.post('/posts', async (req, res) => {
     }
     console.log(`Created: ${JSON.stringify(posts)}`.bgYellow.black);
     try {
+        console.log(`Echo event: type: "PostCreated" data: ${JSON.stringify(posts)}`.bgYellow.black);
         await axios.post("http://localhost:4005/events", {
             type: "PostCreated",
             data: {
@@ -34,7 +35,6 @@ app.post('/posts', async (req, res) => {
     }catch (e) {
         console.error(`${e.message}`.bgRed.black);
     }
-    console.log(`Echo event: type: "PostCreated" data: ${JSON.stringify(posts)}`.bgYellow.black);
     res.status(201).send(posts[id]);
 })
 
