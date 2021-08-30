@@ -38,6 +38,11 @@ app.post('/posts', async (req, res) => {
     res.status(201).send(posts[id]);
 })
 
+app.post('/events', (req, res) => {
+    console.log(`Received event: type: ${req.body.type} data: ${JSON.stringify(req.body.data)}`.bgYellow.black);
+    res.send({});
+})
+
 app.listen(4000, () => {
     console.info('\n' +
         '██████   ██████  ███████ ████████       ███████ ███████ ██████  ██    ██ ██  ██████ ███████ \n' +
